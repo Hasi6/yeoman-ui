@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { YouiEvents } from "./youi-events";
 import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 import { GeneratorFilter, GeneratorType } from './filter';
+import { dirname } from 'path';
 
 export class VSCodeYouiEvents implements YouiEvents {
     private webviewPanel: vscode.WebviewPanel;
@@ -65,7 +66,7 @@ export class VSCodeYouiEvents implements YouiEvents {
                 const workspacePath = _.get(vscode, "workspace.workspaceFolders[0].uri.fsPath");
                 // 1. target workspace folder should not already contain target generator folder
                 const foundInWorkspace = _.find(vscode.workspace.workspaceFolders, (wsFolder: vscode.WorkspaceFolder) => {
-                    return targetFolderUri.fsPath === wsFolder.uri.fsPath;
+                    return dirname(targetFolderUri.fsPath) === wsFolder.uri.fsPath;
                 });
                 // 2. Theia bug: vscode.workspace.workspaceFolders should not be undefined or empty
                 if (!foundInWorkspace && workspacePath) {
